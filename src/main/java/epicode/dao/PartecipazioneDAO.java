@@ -1,46 +1,42 @@
 package epicode.dao;
 
-import epicode.entities.Event;
+import epicode.entities.Partecipazione;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-public class EventsDAO {
+public class PartecipazioneDAO {
     private EntityManager em;
 
-    public EventsDAO(EntityManager em) {
+    public PartecipazioneDAO(EntityManager em) {
         this.em = em;
     }
-
-
-    public void save(Event evento) {
+    public void save(Partecipazione attendance) {
         try {
             EntityTransaction t = em.getTransaction();
             t.begin();
-            em.persist(evento);
+            em.persist(attendance);
             t.commit();
-            System.out.println("Evento - " + evento.getTitolo() + " - creato!");
+            System.out.println("Partecipazione all'evento " + attendance.getEvento() + " per la persona " + attendance.getPersona().getCognome() + ", creata");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public Event findById(long id) {
-        return em.find(Event.class, id);
+    public Partecipazione findById(long id) {
+        return em.find(Partecipazione.class, id);
     }
 
     public void findByIdAndDelete(long id) {
         try {
             EntityTransaction t = em.getTransaction();
-            Event found = em.find(Event.class, id);
+            t.begin();
+            Partecipazione found = em.find(Partecipazione.class, id);
             if (found != null) {
-                t.begin();
                 em.remove(found);
                 t.commit();
-                System.out.println("Evento eliminato");
-            } else System.out.println("Evento non trovato");
-
-
+                System.out.println("Partecipazione cancellata");
+            } else System.out.println("Partecipazione non trovata");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

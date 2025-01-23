@@ -1,7 +1,11 @@
 package epicode.entities;
 
+import epicode.Enum.TipoEvento;
+
 import javax.persistence.*;
+import javax.xml.stream.Location;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "eventi")
@@ -17,15 +21,25 @@ public class Event {
     private TipoEvento tipoEvento;
     private int numeroMassimoPartecipanti;
 
-    public Event() {
+
+    @ManyToOne
+    @JoinColumn(name = "Location_id")
+private Location location;
+    @OneToMany(mappedBy = "evento")
+private List<Partecipazione> partecipazioneList;
+
+    public Event(long id) {
+        this.id = id;
     }
 
-    public Event(String titolo, LocalDate dataEvento, String descrizione, TipoEvento tipoEvento, int numeroMassimoPartecipanti) {
+    public Event(String titolo, LocalDate dataEvento, String descrizione, TipoEvento tipoEvento, int numeroMassimoPartecipanti, Location location, List<Partecipazione> partecipazioneList) {
         this.titolo = titolo;
         this.dataEvento = dataEvento;
         this.descrizione = descrizione;
         this.tipoEvento = tipoEvento;
         this.numeroMassimoPartecipanti = numeroMassimoPartecipanti;
+        this.location = location;
+        this.partecipazioneList = partecipazioneList;
     }
 
     public long getId() {
@@ -72,15 +86,36 @@ public class Event {
         this.numeroMassimoPartecipanti = numeroMassimoPartecipanti;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
+    public List<Partecipazione> getListaPartecipazioni() {
+        return partecipazioneList;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public void setPartecipazioneList(List<Partecipazione> partecipazioneList) {
+        this.partecipazioneList = partecipazioneList;
+    }
+
+
     @Override
     public String toString() {
-        return "Evento{" +
+        return "Event{" +
                 "id=" + id +
                 ", titolo='" + titolo + '\'' +
                 ", dataEvento=" + dataEvento +
                 ", descrizione='" + descrizione + '\'' +
                 ", tipoEvento=" + tipoEvento +
                 ", numeroMassimoPartecipanti=" + numeroMassimoPartecipanti +
+                ", location=" + location +
+                ", partecipazioneList=" + partecipazioneList +
                 '}';
     }
+
+
 }

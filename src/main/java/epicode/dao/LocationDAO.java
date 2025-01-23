@@ -1,44 +1,45 @@
 package epicode.dao;
 
-import epicode.entities.Event;
+import epicode.entities.Location;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-public class EventsDAO {
+public class LocationDAO {
     private EntityManager em;
 
-    public EventsDAO(EntityManager em) {
+    public LocationDAO(EntityManager em) {
         this.em = em;
     }
 
-
-    public void save(Event evento) {
+    public void save(Location loc) {
         try {
             EntityTransaction t = em.getTransaction();
             t.begin();
-            em.persist(evento);
+            em.persist(loc);
             t.commit();
-            System.out.println("Evento - " + evento.getTitolo() + " - creato!");
+            System.out.println("Location - " + loc.getNome() + " - creata!");
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public Event findById(long id) {
-        return em.find(Event.class, id);
+
+    public Location findById(long id) {
+        return em.find(Location.class, id);
     }
 
     public void findByIdAndDelete(long id) {
         try {
             EntityTransaction t = em.getTransaction();
-            Event found = em.find(Event.class, id);
+            t.begin();
+            Location found = em.find(Location.class, id);
             if (found != null) {
-                t.begin();
                 em.remove(found);
                 t.commit();
-                System.out.println("Evento eliminato");
-            } else System.out.println("Evento non trovato");
+                System.out.println("Location eliminata");
+            } else System.out.println("Location non trovata");
 
 
         } catch (Exception e) {
