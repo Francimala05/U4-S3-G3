@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "eventi")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Event {
     @Id
     @GeneratedValue
@@ -20,7 +20,6 @@ public class Event {
     @Enumerated(EnumType.STRING)
     private TipoEvento tipoEvento;
     private int numeroMassimoPartecipanti;
-
 
     @ManyToOne
     @JoinColumn(name = "Location_id")
